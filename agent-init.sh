@@ -13,7 +13,7 @@ system-docker run -d --name=logspout --restart=always --net=host -v=/var/run/sys
 system-docker stop walinuxagent && system-docker rm walinuxagent && :
 system-docker run -d --name=walinuxagent --privileged --restart=always \
   --volumes-from=all-volumes --ipc=host --net=host --pid=host \
-  imikushin/walinuxagent -daemon
+  imikushin/walinuxagent -daemon -verbose
 EOF
 
 chmod +x /var/lib/rancher/conf/start-agent.sh
