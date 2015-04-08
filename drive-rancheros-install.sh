@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 ## make sure /dev/sdc exists
 # ls -lAh /dev/disk/by-id/
