@@ -3,16 +3,29 @@ waagent:
   restart: always
   volumes_from:
   - all-volumes
+  links:
+  - console
   net: host
   ipc: host
   pid: host
   image: imikushin/walinuxagent
   command: -daemon -verbose
 
+sshwatcher:
+  privileged: true
+  restart: always
+  volumes_from:
+  - all-volumes
+  links:
+  - console
+  image: imikushin/sshwatcher
+
 logspout:
   restart: always
   volumes:
   - /var/run/system-docker.sock:/tmp/docker.sock
+  links:
+  - network
   net: host
   image: gliderlabs/logspout
   command: syslog://logs2.papertrailapp.com:46270
