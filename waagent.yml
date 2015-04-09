@@ -1,0 +1,18 @@
+waagent:
+  privileged: true
+  restart: always
+  volumes_from:
+  - all-volumes
+  net: host
+  ipc: host
+  pid: host
+  image: imikushin/walinuxagent
+  command: -daemon -verbose
+
+logspout:
+  restart: always
+  volumes:
+  - /var/run/system-docker.sock:/tmp/docker.sock
+  net: host
+  image: gliderlabs/logspout
+  command: syslog://logs2.papertrailapp.com:46270
