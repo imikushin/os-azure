@@ -11,4 +11,4 @@ docker run --privileged --net=host -it --entrypoint=/scripts/set-disk-partitions
 
 # vi waagent-init.yml
 # vi waagent.yml
-docker run --privileged --net=host -it -v=/home:/home imikushin/os-installer -d /dev/sdc -t generic -c /home/core/waagent-init.yml -f waagent.yml
+docker run --privileged --net=host -it -v=/home:/home imikushin/os-installer -d /dev/sdc -t generic -c /home/core/waagent-init.yml -f /home/core/waagent.yml
