@@ -4,7 +4,7 @@ waagent:
   volumes_from:
   - all-volumes
   links:
-  - console
+  - network
   net: host
   ipc: host
   pid: host
@@ -15,17 +15,17 @@ sshwatcher:
   privileged: true
   restart: always
   volumes_from:
-  - all-volumes
+  - user-volumes
   links:
   - console
   image: imikushin/sshwatcher
 
-logspout:
-  restart: always
-  volumes:
-  - /var/run/system-docker.sock:/tmp/docker.sock
-  links:
-  - network
-  net: host
-  image: gliderlabs/logspout
-  command: syslog://logs2.papertrailapp.com:46270
+#logspout:
+#  restart: always
+#  volumes:
+#  - /var/run/system-docker.sock:/tmp/docker.sock
+#  links:
+#  - network
+#  net: host
+#  image: gliderlabs/logspout
+#  command: syslog://logs2.papertrailapp.com:46270
