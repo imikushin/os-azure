@@ -19,15 +19,15 @@ BUILD_USER_KEY=${BUILD_USER_KEY:-./vagrant}
 azure vm create -l "West US" -e -P -t ${BUILD_USER_CERT} ${BUILD_HOST} ${BUILD_HOST_IMAGE} ${BUILD_HOST_USER}
 azure vm disk attach-new ${BUILD_HOST} 40
 
-sftp -i ${BUILD_USER_KEY} ${BUILD_HOST_USER}@${BUILD_HOST}.cloudapp.net:/home/${BUILD_HOST_USER} <<EOF
+sftp -i ${BUILD_USER_KEY} -oStrictHostKeyChecking=no ${BUILD_HOST_USER}@${BUILD_HOST}.cloudapp.net:/home/${BUILD_HOST_USER} <<EOF
 put waagent.yml
 put rancher.yml
 EOF
 
-ssh -i ${BUILD_USER_KEY} ${BUILD_HOST_USER}@${BUILD_HOST}.cloudapp.net \
+ssh -i ${BUILD_USER_KEY} -oStrictHostKeyChecking=no ${BUILD_HOST_USER}@${BUILD_HOST}.cloudapp.net \
   docker run --privileged --net=host --entrypoint=/scripts/set-disk-partitions imikushin/os-installer /dev/sdc
 
-ssh -i ${BUILD_USER_KEY} ${BUILD_HOST_USER}@${BUILD_HOST}.cloudapp.net \
+ssh -i ${BUILD_USER_KEY} -oStrictHostKeyChecking=no ${BUILD_HOST_USER}@${BUILD_HOST}.cloudapp.net \
   docker run --privileged --net=host -v=/home:/home \
     imikushin/os-installer \
       -d /dev/sdc -t generic -c /home/${BUILD_HOST_USER}/rancher.yml -f /home/${BUILD_HOST_USER}/waagent.yml
