@@ -3,6 +3,8 @@ waagent:
   restart: always
   volumes_from:
   - all-volumes
+  volumes:
+  - /var/lib/waagent:/var/lib/waagent
   links:
   - network
   net: host
@@ -19,13 +21,3 @@ sshwatcher:
   links:
   - console
   image: imikushin/sshwatcher
-
-#logspout:
-#  restart: always
-#  volumes:
-#  - /var/run/system-docker.sock:/tmp/docker.sock
-#  links:
-#  - network
-#  net: host
-#  image: gliderlabs/logspout
-#  command: syslog://logs2.papertrailapp.com:46270
