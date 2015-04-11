@@ -13,4 +13,4 @@ cd $(dirname $0)
 RANCHEROS_HOST=rancheros-$(apg -a 1 -n 1 -m 7 -x 7 -M NL)
 PASS=$(apg -a 1 -n 1 -m 8 -x 8 -M NLSC)
 
-azure vm create -l "West US" -e -t ./vagrantCert.pem ${RANCHEROS_HOST} ${RANCHEROS_IMAGE} rancher ${PASS}
+azure vm create -l "West US" -e -t ./vagrantCert.pem ${RANCHEROS_HOST} ${RANCHEROS_IMAGE} rancher "${PASS}"

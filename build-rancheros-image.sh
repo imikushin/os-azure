@@ -38,8 +38,11 @@ DISK_NAME=$(cat tmp/disks.json | jq '.[1].name' | xargs -I{} echo {})
 IMAGE_VHD=$(cat tmp/disks.json | jq '.[1].mediaLink' | xargs -I{} echo {})
 
 azure vm disk detach ${BUILD_HOST} 0
-sleep 5
+echo "Sleeping for 20 seconds..."
+sleep 20
 
 azure vm disk delete ${DISK_NAME}
+
+azure vm delete -q ${BUILD_HOST}
 
 azure vm image create -o linux -u ${IMAGE_VHD} RancherOS-${RANCHEROS_VERSION}
