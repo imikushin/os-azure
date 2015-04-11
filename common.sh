@@ -1,0 +1,4 @@
+#!/bin/bash
+
+RANCHEROS_VERSION="v0.3.0-rc2-debug2"
+RANCHEROS_IMAGE=RancherOS-${RANCHEROS_VERSION}

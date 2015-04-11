@@ -7,7 +7,7 @@ cd $(dirname $0)
 ## - installed packages: apg, jq
 ## - you are logged in with azure cli
 
-RANCHEROS_VERSION="v0.3.0-rc2-debug2"
+. ./common.sh
 
 BUILD_HOST=build-$(apg -a 1 -n 1 -m 7 -x 7 -M NL)
 BUILD_HOST_IMAGE="2b171e93f07c4903bcad35bda10acf22__CoreOS-Alpha-647.0.0"
