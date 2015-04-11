@@ -47,4 +47,4 @@ azure vm disk delete ${DISK_NAME}
 
 azure vm delete -q -b ${BUILD_HOST}
 
-azure vm image create -o linux -u ${IMAGE_VHD} RancherOS-${RANCHEROS_VERSION}
+azure vm image create -o linux -u ${IMAGE_VHD} ${RANCHEROS_IMAGE}
