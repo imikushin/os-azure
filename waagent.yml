@@ -6,7 +6,7 @@ waagent:
   volumes:
   - /var/lib/waagent:/var/lib/waagent
   links:
-  - network
+  - console
   net: host
   ipc: host
   pid: host
@@ -19,5 +19,5 @@ sshwatcher:
   volumes_from:
   - user-volumes
   links:
-  - console
+  - waagent
   image: imikushin/sshwatcher
