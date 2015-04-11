@@ -32,6 +32,8 @@ ssh -i ${BUILD_USER_KEY} ${BUILD_HOST_USER}@${BUILD_HOST}.cloudapp.net \
     imikushin/os-installer \
       -d /dev/sdc -t generic -c /home/${BUILD_HOST_USER}/rancher.yml -f /home/${BUILD_HOST_USER}/waagent.yml
 
+mkdir -p ./tmp
+
 azure vm disk list --json -d ${BUILD_HOST}.cloudapp.net > ./tmp/disks.json
 
 DISK_NAME=$(cat tmp/disks.json | jq '.[1].name' | xargs -I{} echo {})
