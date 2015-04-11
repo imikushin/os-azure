@@ -10,7 +10,7 @@ waagent:
   net: host
   ipc: host
   pid: host
-  image: imikushin/walinuxagent
+  image: imikushin/waagent
   command: -daemon -verbose
 
 sshwatcher:
