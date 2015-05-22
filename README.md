@@ -5,6 +5,8 @@
 - [MS Azure account](http://azure.microsoft.com/)
 - [Azure CLI](https://github.com/Azure/azure-xplat-cli)
 - [Connect Azure CLI to your subscription](http://azure.microsoft.com/en-us/documentation/articles/xplat-cli/#configure)
+- installed packages: apg, jq
+- you are logged in with `azure` CLI
 
 
 ## Build the image
