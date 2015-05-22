@@ -10,7 +10,7 @@ cd $(dirname $0)
 . ./common.sh
 
 BUILD_HOST=build-$(apg -a 1 -n 1 -m 7 -x 7 -M NL)
-BUILD_HOST_IMAGE="2b171e93f07c4903bcad35bda10acf22__CoreOS-Alpha-647.0.0"
+BUILD_HOST_IMAGE="2b171e93f07c4903bcad35bda10acf22__CoreOS-Alpha-681.0.0"
 BUILD_HOST_USER="core"
 
 BUILD_USER_CERT=${BUILD_USER_CERT:-./vagrantCert.pem}
@@ -19,15 +19,19 @@ BUILD_USER_KEY=${BUILD_USER_KEY:-./vagrant}
 azure vm create -l "West US" -e -P -t ${BUILD_USER_CERT} ${BUILD_HOST} ${BUILD_HOST_IMAGE} ${BUILD_HOST_USER}
 azure vm disk attach-new ${BUILD_HOST} 40
 
-sftp -i ${BUILD_USER_KEY} -oStrictHostKeyChecking=no ${BUILD_HOST_USER}@${BUILD_HOST}.cloudapp.net:/home/${BUILD_HOST_USER} <<EOF
+until ssh -F ./ssh_config -i ${BUILD_USER_KEY} ${BUILD_HOST_USER}@${BUILD_HOST}.cloudapp.net /bin/true; do
+  sleep 2
+done
+
+sftp -F ./ssh_config -i ${BUILD_USER_KEY} ${BUILD_HOST_USER}@${BUILD_HOST}.cloudapp.net:/home/${BUILD_HOST_USER} <<EOF
 put waagent.yml
 put rancher.yml
 EOF
 
-ssh -i ${BUILD_USER_KEY} -oStrictHostKeyChecking=no ${BUILD_HOST_USER}@${BUILD_HOST}.cloudapp.net \
+ssh -F ./ssh_config -i ${BUILD_USER_KEY} ${BUILD_HOST_USER}@${BUILD_HOST}.cloudapp.net \
   docker run --privileged --net=host --entrypoint=/scripts/set-disk-partitions imikushin/os-installer /dev/sdc
 
-ssh -i ${BUILD_USER_KEY} -oStrictHostKeyChecking=no ${BUILD_HOST_USER}@${BUILD_HOST}.cloudapp.net \
+ssh -F ./ssh_config -i ${BUILD_USER_KEY} ${BUILD_HOST_USER}@${BUILD_HOST}.cloudapp.net \
   docker run --privileged --net=host -v=/home:/home \
     imikushin/os-installer \
       -d /dev/sdc -t generic -c /home/${BUILD_HOST_USER}/rancher.yml -f /home/${BUILD_HOST_USER}/waagent.yml

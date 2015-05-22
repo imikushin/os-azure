@@ -1,0 +1,4 @@
+BatchMode yes
+StrictHostKeyChecking no
+UserKnownHostsFile /dev/null
+LogLevel quiet
