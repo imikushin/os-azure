@@ -24,17 +24,29 @@ until ssh -F ./ssh_config -i ${BUILD_USER_KEY} ${BUILD_HOST_USER}@${BUILD_HOST}.
 done
 
 sftp -F ./ssh_config -i ${BUILD_USER_KEY} ${BUILD_HOST_USER}@${BUILD_HOST}.cloudapp.net:/home/${BUILD_HOST_USER} <<EOF
-put waagent.yml
-put rancher.yml
+put azure.yml
 EOF
 
-ssh -F ./ssh_config -i ${BUILD_USER_KEY} ${BUILD_HOST_USER}@${BUILD_HOST}.cloudapp.net \
-  docker run --privileged --net=host --entrypoint=/scripts/set-disk-partitions imikushin/os-installer /dev/sdc
+ssh -F ./ssh_config -i ${BUILD_USER_KEY} ${BUILD_HOST_USER}@${BUILD_HOST}.cloudapp.net <<EOF
+  docker pull imikushin/waagent
 
-ssh -F ./ssh_config -i ${BUILD_USER_KEY} ${BUILD_HOST_USER}@${BUILD_HOST}.cloudapp.net \
+  docker tag imikushin/waagent waagent
+
+  docker pull imikushin/sshwatcher
+
+  docker tag imikushin/sshwatcher sshwatcher
+
+  docker pull rancher/debianconsole:v0.3.1
+
+  docker save waagent sshwatcher rancher/debianconsole:v0.3.1 | gzip > azure.tar.gz
+
+  docker run --privileged --net=host --entrypoint=/scripts/set-disk-partitions imikushin/os:${RANCHEROS_VERSION} /dev/sdc
+
   docker run --privileged --net=host -v=/home:/home \
-    imikushin/os-installer \
-      -d /dev/sdc -t generic -c /home/${BUILD_HOST_USER}/rancher.yml -f /home/${BUILD_HOST_USER}/waagent.yml
+    imikushin/os:${RANCHEROS_VERSION} \
+      -d /dev/sdc -t generic -c /home/${BUILD_HOST_USER}/azure.yml \
+      -f /home/${BUILD_HOST_USER}/azure.tar.gz:/lib/system-docker/preload/azure.tar.gz
+EOF
 
 mkdir -p ./tmp
 

@@ -1,5 +1,0 @@
-#cloud-config
-
-rancher:
-  enabled_services:
-  - /var/lib/rancher/conf/waagent.yml

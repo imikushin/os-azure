@@ -14,8 +14,8 @@
 Check RancherOS version and edit the image name in `./common.sh`. Currently: 
 
 ```bash
-RANCHEROS_VERSION="v0.3.0-rc2"
-RANCHEROS_IMAGE=RancherOS-${RANCHEROS_VERSION}-debug5
+RANCHEROS_VERSION="v0.3.1-rc3"
+RANCHEROS_IMAGE=RancherOS-${RANCHEROS_VERSION}-debug1
 ```
 
 Build the image:

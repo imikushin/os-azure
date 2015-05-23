@@ -2,7 +2,7 @@
 set -e -x
 
 mkdir -p /home/rancher/.ssh
-chown -R rancher:rancher /home/rancher/.ssh
+chown -R rancher:rancher /home/rancher
 chmod -R go-rwx /home/rancher/.ssh
 
 while inotifywait -q -r -e attrib /home/rancher/.ssh || true; do

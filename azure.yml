@@ -1,0 +1,30 @@
+#cloud-config
+rancher:
+  services:
+    waagent:
+      privileged: true
+      restart: always
+      labels:
+      - io.rancher.os.scope=system
+      volumes_from:
+      - all-volumes
+      volumes:
+      - /var/lib/waagent:/var/lib/waagent
+      links:
+      - console
+      net: host
+      ipc: host
+      pid: host
+      image: waagent
+      command: -daemon -verbose
+
+    sshwatcher:
+      privileged: true
+      restart: always
+      labels:
+      - io.rancher.os.scope=system
+      volumes_from:
+      - user-volumes
+      links:
+      - waagent
+      image: sshwatcher
