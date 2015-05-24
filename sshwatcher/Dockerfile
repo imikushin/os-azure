@@ -1,4 +1,4 @@
-FROM ubuntu:14.04.2
+FROM debian:jessie
 RUN apt-get update && apt-get upgrade --no-install-recommends -y
 RUN apt-get install -y --no-install-recommends inotify-tools
 RUN addgroup --gid 1100 rancher && \

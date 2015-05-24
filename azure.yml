@@ -28,3 +28,6 @@ rancher:
       links:
       - waagent
       image: sshwatcher
+
+  services_include:
+    debian-console: true
