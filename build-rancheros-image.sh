@@ -10,7 +10,7 @@ cd $(dirname $0)
 . ./common.sh
 
 BUILD_HOST=build-$(apg -a 1 -n 1 -m 7 -x 7 -M NL)
-BUILD_HOST_IMAGE="2b171e93f07c4903bcad35bda10acf22__CoreOS-Alpha-681.0.0"
+BUILD_HOST_IMAGE="2b171e93f07c4903bcad35bda10acf22__CoreOS-Alpha-695.0.0"
 BUILD_HOST_USER="core"
 
 azure vm create -l "West US" -e -P -t ${BUILD_USER_CERT} ${BUILD_HOST} ${BUILD_HOST_IMAGE} ${BUILD_HOST_USER}
@@ -26,20 +26,20 @@ EOF
 
 ssh -F ./ssh_config -i ${BUILD_USER_KEY} ${BUILD_HOST_USER}@${BUILD_HOST}.cloudapp.net <<EOF
   docker pull imikushin/waagent
-
   docker tag imikushin/waagent waagent
 
   docker pull imikushin/sshwatcher
-
   docker tag imikushin/sshwatcher sshwatcher
 
-  docker pull rancher/debianconsole:v0.3.1
+  docker pull imikushin/debianconsole:v0.3.1
+  docker tag imikushin/debianconsole:v0.3.1 rancher/debianconsole:v0.3.1
 
   docker save waagent sshwatcher rancher/debianconsole:v0.3.1 | gzip > azure.tar.gz
 
   docker run --privileged --net=host --entrypoint=/scripts/set-disk-partitions imikushin/os:${RANCHEROS_VERSION} /dev/sdc
 
   docker run --privileged --net=host -v=/home:/home \
+    -e KERNEL_ARGS='earlyprintk=ttyS0 rootdelay=300' \
     imikushin/os:${RANCHEROS_VERSION} \
       -d /dev/sdc -t generic -c /home/${BUILD_HOST_USER}/azure.yml \
       -f /home/${BUILD_HOST_USER}/azure.tar.gz:/lib/system-docker/preload/azure.tar.gz
