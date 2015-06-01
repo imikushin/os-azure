@@ -16,7 +16,7 @@ rancher:
       ipc: host
       pid: host
       image: waagent
-      command: -daemon -verbose
+      command: -daemon
 
     sshwatcher:
       privileged: true
