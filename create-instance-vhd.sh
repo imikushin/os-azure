@@ -11,13 +11,13 @@ cd $(dirname $0)
 
 . ./common.sh
 
-VM_IMAGE=CoreOS:CoreOS:Alpha:738.1.0
+VM_DISK="https://rancheros.blob.core.windows.net/vhds/build-81mqssr-20150716-194433715.vhd"
 VM_NAME=vm-$(apg -a 1 -n 1 -m 7 -x 7 -M NL)
 VM_HOST=${VM_NAME}.westus.cloudapp.azure.com
 
 azure vm create -g ros-build \
     -o rancheros \
-    -Q ${VM_IMAGE} \
+    -d ${VM_DISK} \
     -n ${VM_NAME} \
     -i ${VM_NAME}-ip \
     -w ${VM_NAME} \
@@ -27,6 +27,8 @@ azure vm create -g ros-build \
     -M ${USER_PUB} \
     -u rancher -p ${USER_PASS}
 
-until ssh -F ./ssh_config -i ${USER_KEY} rancher@${VM_HOST} /bin/true; do
-  sleep 2
-done
+echo ssh -F ./ssh_config_term -i ${USER_KEY} rancher@${VM_HOST}
+
+#until ssh -F ./ssh_config -i ${USER_KEY} rancher@${VM_HOST} /bin/true; do
+#  sleep 2
+#done

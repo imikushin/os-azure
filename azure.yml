@@ -1,8 +1,9 @@
 #cloud-config
 rancher:
-  cloud_init:
-    datasources:
-    - waagent
+
+#  cloud_init:
+#    datasources:
+#    - waagent
 
   services:
     waagent:
@@ -17,6 +18,7 @@ rancher:
       volumes:
       - /var/lib/waagent:/var/lib/waagent
       links:
+      - console
       - preload-system-images
       - network
       net: host
