@@ -1,7 +1,13 @@
 #cloud-config
 rancher:
+  cloud_init:
+    datasources:
+    - waagent
+
   services:
     waagent:
+      image: waagent
+      command: -daemon
       privileged: true
       restart: always
       labels:
@@ -11,12 +17,12 @@ rancher:
       volumes:
       - /var/lib/waagent:/var/lib/waagent
       links:
-      - console
+      - preload-system-images
+      - network
       net: host
+      uts: host
       ipc: host
       pid: host
-      image: waagent
-      command: -daemon
 
     sshwatcher:
       privileged: true
