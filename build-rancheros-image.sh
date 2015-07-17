@@ -13,7 +13,7 @@ BUILD_HOST=build-$(apg -a 1 -n 1 -m 7 -x 7 -M NL)
 BUILD_HOST_IMAGE="2b171e93f07c4903bcad35bda10acf22__CoreOS-Alpha-695.0.0"
 BUILD_HOST_USER="core"
 
-azure vm create -z Standard_D2 -l "West US" -e -P -t ${BUILD_USER_CERT} ${BUILD_HOST} ${BUILD_HOST_IMAGE} ${BUILD_HOST_USER}
+azure vm create -z Standard_D2 -l "West US" -e -P -t ${BUILD_USER_PUB} ${BUILD_HOST} ${BUILD_HOST_IMAGE} ${BUILD_HOST_USER}
 azure vm disk attach-new ${BUILD_HOST} 50
 
 until ssh -F ./ssh_config -i ${BUILD_USER_KEY} ${BUILD_HOST_USER}@${BUILD_HOST}.cloudapp.net /bin/true; do
